@@ -5,13 +5,10 @@ function connectionDB() {
     "mongodb+srv://vinhhuynh:01121999@cluster0.27arp.mongodb.net/dbChatSocket?retryWrites=true&w=majority";
 
   mongoose
-    .connect(
-      "mongodb+srv://vinhhuynh:01121999@cluster0.27arp.mongodb.net/dbChatSocket?retryWrites=true&w=majority",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    )
+    .connect(process.env.MONGO_CONECTION || uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
     .then(
       () => {
         console.log("Ket noi db thanh cong");
