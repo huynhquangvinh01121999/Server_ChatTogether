@@ -5,7 +5,7 @@ function connectionDB() {
     "mongodb+srv://vinhhuynh:01121999@cluster0.27arp.mongodb.net/dbChatSocket?retryWrites=true&w=majority";
 
   mongoose
-    .connect(process.env.MONGO_CONECTION || uri, {
+    .connect(process.env.MONGODB_URI || uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
