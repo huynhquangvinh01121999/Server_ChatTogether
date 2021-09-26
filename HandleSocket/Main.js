@@ -16,6 +16,12 @@ module.exports = (io) => {
 
     // lắng nghe khi client phản hồi sau khi server gửi id qa -> tiến hành update lại clientId cho user connect
     client.on("replySendClientId", (userInfo) => {
+      io.emit("updateReducerUsers_ClientId", {
+        clientId: client.id,
+        userInfo: userInfo,
+        status: true,
+      });
+
       // push userInfo vô LIST_CLIENT để khỏi mock db
       if (LIST_CLIENT.length == 0) {
         LIST_CLIENT.push({ userInfo: userInfo, clientId: client.id });
@@ -43,11 +49,6 @@ module.exports = (io) => {
       )
         .then((data) => {
           // console.log(LIST_CLIENT);
-          io.emit("updateReducerUsers_ClientId", {
-            clientId: client.id,
-            userInfo: userInfo,
-            status: true,
-          });
         })
         .catch((err) => {
           // console.log(err);
@@ -61,8 +62,18 @@ module.exports = (io) => {
       io.emit("notifiDisconnect", client.id);
     });
 
+    // lắng nghe khi client Login vô -> update lại trạng thái cho user đó online
+    client.on("setOnlineLogin", (data) => {
+      io.emit("replySetOnline", {
+        clientId: client.id,
+        userInfo: data,
+        status: true,
+      });
+    });
+
     // client phản hồi user này đã disconnect và tiến hành update lại status trong db
     client.on("acceptDisconnect", (clientId) => {
+      io.emit("clientLogouted", clientId);
       Users.findOneAndUpdate(
         {
           ClientId: clientId,

@@ -1,18 +1,15 @@
 let Chats = require("../Models/Chats");
 
 function getMessagesToMe(req, res) {
-  Chats.find()
-    .and([
-      { or: { FromUser: req.params.username } },
-      { or: { ToUser: req.params.username } },
-    ])
-    .exec((err, data) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.status(201).json(data);
-      }
-    });
+  Chats.find({
+    $or: [{ FromUser: req.query.username }, { ToUser: req.query.username }],
+  }).exec((err, data) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(201).json(data);
+    }
+  });
 }
 
 function getMessagesFromUser(req, res) {

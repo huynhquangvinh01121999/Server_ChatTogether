@@ -31,6 +31,7 @@ function createUser(req, res) {
           Phone: phone,
           UserName: username,
           Password: password,
+          ClientId: "",
         });
       }
     })
